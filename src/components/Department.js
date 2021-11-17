@@ -1,13 +1,21 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button, ButtonToolbar } from "react-bootstrap";
+import AddDepartmentModal from "./AddDepartmentModal";
 
 function Department() {
     const [departments, setDepartment] = useState([]);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        refreshList();
+    }
 
     useEffect(() => {
         refreshList();
-    }, [])
+    }, []);
 
     const refreshList = () => {
         fetch(process.env.REACT_APP_API + 'department')
@@ -37,6 +45,12 @@ function Department() {
                     ))}
                 </tbody>
             </Table>
+
+            <ButtonToolbar>
+                <Button variant="primary" onClick={handleShow}>Thêm</Button>
+
+                <AddDepartmentModal show={show} onHide={handleClose}/>
+            </ButtonToolbar>
         </div>
     );
 }

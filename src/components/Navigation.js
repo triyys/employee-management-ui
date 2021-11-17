@@ -20,7 +20,7 @@ function Navigation() {
                 </Navbar.Collapse>
             </Navbar>
         </div>
-    )
+    );
 }
 
 export default Navigation;
