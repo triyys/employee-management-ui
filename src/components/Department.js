@@ -2,14 +2,21 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Table, Button, ButtonToolbar } from "react-bootstrap";
 import AddDepartmentModal from "./AddDepartmentModal";
+import EditDepartmentModal from "./EditDepartmentModal";
 
 function Department() {
     const [departments, setDepartment] = useState([]);
-    const [show, setShow] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState({show: false});
 
-    const handleShow = () => setShow(true);
-    const handleClose = () => {
-        setShow(false);
+    const handleShowAddModal = () => setShowAddModal(true);
+    const handleCloseAddModal = () => {
+        setShowAddModal(false);
+        refreshList();
+    }
+
+    const handleCloseEditModal = () => {
+        setShowEditModal({show: false});
         refreshList();
     }
 
@@ -40,16 +47,33 @@ function Department() {
                         <tr key={department.Id}>
                             <td>{department.Id}</td>
                             <td>{department.Name}</td>
-                            <td>Sửa / Xóa</td>
+                            <td>
+                                <ButtonToolbar>
+                                    <Button
+                                        className="mr-2"
+                                        variant="info"
+                                        onClick={() => setShowEditModal({
+                                            show: true,
+                                            id: department.Id,
+                                            name: department.Name,
+                                        })}
+                                    >Sửa</Button>
+                                    <EditDepartmentModal
+                                        show={showEditModal.show}
+                                        onHide={handleCloseEditModal}
+                                        departmentId={showEditModal.id}
+                                        departmentName={showEditModal.name}
+                                    />
+                                </ButtonToolbar>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
 
             <ButtonToolbar>
-                <Button variant="primary" onClick={handleShow}>Thêm</Button>
-
-                <AddDepartmentModal show={show} onHide={handleClose}/>
+                <Button variant="primary" onClick={handleShowAddModal}>Thêm</Button>
+                <AddDepartmentModal show={showAddModal} onHide={handleCloseAddModal}/>
             </ButtonToolbar>
         </div>
     );
