@@ -31,6 +31,19 @@ function Department() {
             .catch(err => {console.log("ERROR")});
     };
 
+    const deleteDepartment = id => {
+        if (window.confirm(`Bạn có chắc muốn xóa phòng ban ${id}?`)) {
+            fetch(`${process.env.REACT_APP_API}department/${id}`,{
+                method: 'DELETE',
+                header: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => refreshList());
+        }
+    }
+
     return (
         <div>
             <Table className="mt-4" striped bordered hover size="sm">
@@ -50,7 +63,7 @@ function Department() {
                             <td>
                                 <ButtonToolbar>
                                     <Button
-                                        className="mr-2"
+                                        className="mt-2"
                                         variant="info"
                                         onClick={() => setShowEditModal({
                                             show: true,
@@ -58,6 +71,11 @@ function Department() {
                                             name: department.Name,
                                         })}
                                     >Sửa</Button>
+                                    <Button
+                                        className="mt-2"
+                                        variant="danger"
+                                        onClick={() => deleteDepartment(department.Id)}
+                                    >Xóa</Button>
                                     <EditDepartmentModal
                                         show={showEditModal.show}
                                         onHide={handleCloseEditModal}
