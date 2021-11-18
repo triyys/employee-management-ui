@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { Table, Button, ButtonToolbar } from "react-bootstrap";
 import AddEmployeeModal from "./AddEmployeeModal";
+import EditEmployeeModal from "./EditEmployeeModal";
 
 function Employee() {
     const [employees, setEmployees] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState({show: false});
 
     const handleShowAddModal = () => setShowAddModal(true);
     const handleCloseAddModal = () => {
         setShowAddModal(false);
+        refreshList();
+    }
+
+    const handleCloseEditModal = () => {
+        setShowEditModal(false);
         refreshList();
     }
 
@@ -20,8 +27,21 @@ function Employee() {
         fetch(process.env.REACT_APP_API + 'employee')
             .then(res => res.json())
             .then(data => setEmployees(data))
-            .catch(err => {console.log("ERROR")});
+            .catch(err => {console.log('ERROR')});
     };
+
+    const deleteEmployee = (id, name) => {
+        if (window.confirm(`Bạn có chắc muốn xóa nhân viên ${name}?`)) {
+            fetch(`${process.env.REACT_APP_API}employee/${id}`,{
+                method: 'DELETE',
+                header: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => refreshList());
+        }
+    }
 
     return (
         <div>
@@ -29,10 +49,9 @@ function Employee() {
                 <thead>
                     <tr>
                         <td>Mã số</td>
-                        <td>Tên nhân viên</td>
-                        <td>Mã phòng ban</td>
+                        <td>Họ và tên</td>
+                        <td>Phòng ban</td>
                         <td>Ngày gia nhập</td>
-                        <td>Ảnh</td>
                     </tr>
                 </thead>
 
@@ -41,10 +60,36 @@ function Employee() {
                         <tr key={employee.Id}>
                             <td>{employee.Id}</td>
                             <td>{employee.Name}</td>
-                            <td>{employee.DepartmentId}</td>
+                            <td>{employee.Department}</td>
                             <td>{employee.DateOfJoining}</td>
-                            <td>{employee.PhotoFileName}</td>
-                            <td>Sửa / Xóa</td>
+                            <td>
+                                <ButtonToolbar>
+                                    <Button
+                                        className="mx-2"
+                                        variant="info"
+                                        size="sm"
+                                        onClick={() => setShowEditModal({
+                                            show: true,
+                                            id: employee.Id,
+                                            name: employee.Name,
+                                            department: employee.Department,
+                                        })}
+                                    >Sửa</Button>
+                                    <Button
+                                        className="mx-2"
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() => deleteEmployee(employee.Id, employee.Name)}
+                                    >Xóa</Button>
+                                    <EditEmployeeModal
+                                        show={showEditModal.show}
+                                        onHide={handleCloseEditModal}
+                                        id={showEditModal.id}
+                                        name={showEditModal.name}
+                                        department={showEditModal.department}
+                                    />
+                                </ButtonToolbar>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

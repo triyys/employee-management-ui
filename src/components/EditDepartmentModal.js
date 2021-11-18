@@ -48,7 +48,6 @@ function EditDepartmentModal({ show, onHide, departmentId, departmentName }) {
                                         required
                                         disabled
                                         defaultValue={departmentId}
-                                        placeholder="Mã số"
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="Name" className="mb-3">

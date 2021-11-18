@@ -65,6 +65,7 @@ function Department() {
                                     <Button
                                         className="mx-2"
                                         variant="info"
+                                        size="sm"
                                         onClick={() => setShowEditModal({
                                             show: true,
                                             id: department.Id,
@@ -74,6 +75,7 @@ function Department() {
                                     <Button
                                         className="mx-2"
                                         variant="danger"
+                                        size="sm"
                                         onClick={() => deleteDepartment(department.Id)}
                                     >Xóa</Button>
                                     <EditDepartmentModal

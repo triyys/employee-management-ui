@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Row, Col, Form, Button } from "react-bootstrap";
 
-function AddEmployeeModal({ show, onHide }) {
+function EditEmployeeModal({ show, onHide, id, name, department }) {
     const [departments, setDepartments] = useState([]);
 
     useEffect(() => {
@@ -14,15 +14,14 @@ function AddEmployeeModal({ show, onHide }) {
     const handleSubmit = e => {
         e.preventDefault();
         fetch(process.env.REACT_APP_API + 'employee', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                Id: e.target.Id.value,
                 Name: e.target.Name.value,
-                DepartmentId: e.target.DepartmentId.value,
-                DateOfJoining: e.target.DateOfJoining.value,
             })
         })
         .then(res => res.json())
@@ -44,35 +43,45 @@ function AddEmployeeModal({ show, onHide }) {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Thêm nhân viên
+                        Sửa tên phòng ban
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
                         <Col sm={6}>
                             <Form onSubmit={handleSubmit}>
+                                <Form.Group controlId="Id" className="mb-3">
+                                    <Form.Label>Mã số:</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="Id"
+                                        required
+                                        disabled
+                                        defaultValue={id}
+                                    />
+                                </Form.Group>
                                 <Form.Group controlId="Name" className="mb-3">
                                     <Form.Label>Họ và tên:</Form.Label>
                                     <Form.Control
                                         type="text"
                                         name="Name"
-                                        required placeholder="Nguyễn Văn A"
+                                        required
+                                        defaultValue={name}
+                                        placeholder="Nguyễn Văn A"
                                     />
                                 </Form.Group>
-                                <Form.Group controlId="DepartmentId" className="mb-3">
+                                <Form.Group controlId="Department" className="mb-3">
                                     <Form.Label>Phòng ban:</Form.Label>
                                     <Form.Select
-                                        name="DepartmentId"
+                                        name="Department"
                                         aria-label="Default select example"
+                                        required
+                                        defaultValue={department}
                                     >
                                         {departments.map(department => (
                                             <option value={department.Id}>{department.Name}</option>
                                         ))}
                                     </Form.Select>
-                                </Form.Group>
-                                <Form.Group controlId="DateOfJoining" className="mb-3">
-                                    <Form.Label>Ngày gia nhập:</Form.Label>
-                                    <Form.Control type="text" name="DateOfJoining" required placeholder="2021/11/11"/>
                                 </Form.Group>
 
                                 <Form.Group>
@@ -92,4 +101,4 @@ function AddEmployeeModal({ show, onHide }) {
     );
 }
 
-export default AddEmployeeModal;
+export default EditEmployeeModal;
