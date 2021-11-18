@@ -5,7 +5,7 @@ import AddDepartmentModal from "./AddDepartmentModal";
 import EditDepartmentModal from "./EditDepartmentModal";
 
 function Department() {
-    const [departments, setDepartment] = useState([]);
+    const [departments, setDepartments] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState({show: false});
 
@@ -27,7 +27,7 @@ function Department() {
     const refreshList = () => {
         fetch(process.env.REACT_APP_API + 'department')
             .then(res => res.json())
-            .then(data => setDepartment(data))
+            .then(data => setDepartments(data))
             .catch(err => {console.log("ERROR")});
     };
 
@@ -63,7 +63,7 @@ function Department() {
                             <td>
                                 <ButtonToolbar>
                                     <Button
-                                        className="mt-2"
+                                        className="mx-2"
                                         variant="info"
                                         onClick={() => setShowEditModal({
                                             show: true,
@@ -72,7 +72,7 @@ function Department() {
                                         })}
                                     >Sửa</Button>
                                     <Button
-                                        className="mt-2"
+                                        className="mx-2"
                                         variant="danger"
                                         onClick={() => deleteDepartment(department.Id)}
                                     >Xóa</Button>
@@ -90,7 +90,11 @@ function Department() {
             </Table>
 
             <ButtonToolbar>
-                <Button variant="primary" onClick={handleShowAddModal}>Thêm</Button>
+                <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={handleShowAddModal}
+                >Thêm phòng ban</Button>
                 <AddDepartmentModal show={showAddModal} onHide={handleCloseAddModal}/>
             </ButtonToolbar>
         </div>

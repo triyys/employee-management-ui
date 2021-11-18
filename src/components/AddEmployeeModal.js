@@ -1,6 +1,6 @@
 import { Modal, Row, Col, Form, Button } from "react-bootstrap";
 
-function AddDepartmentModal({ show, onHide }) {
+function AddEmployeeModal({ show, onHide }) {
     const handleSubmit = e => {
         e.preventDefault();
         fetch(process.env.REACT_APP_API + 'department', {
@@ -11,6 +11,9 @@ function AddDepartmentModal({ show, onHide }) {
             },
             body: JSON.stringify({
                 Name: e.target.Name.value,
+                DepartmentId: e.target.DepartmentId.value,
+                DateOfJoining: e.target.DateOfJoining.value,
+                PhotoFileName: e.target.PhotoFileName.value,
             })
         })
         .then(res => res.json())
@@ -32,7 +35,7 @@ function AddDepartmentModal({ show, onHide }) {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Thêm phòng ban
+                        Thêm nhân viên
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -40,8 +43,20 @@ function AddDepartmentModal({ show, onHide }) {
                         <Col sm={6}>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId="Name" className="mb-3">
-                                    <Form.Label>Hãy nhập tên phòng ban:</Form.Label>
-                                    <Form.Control type="text" name="Name" required placeholder="Phòng IT,..."/>
+                                    <Form.Label>Tên nhân viên:</Form.Label>
+                                    <Form.Control type="text" name="Name" required placeholder="Nguyễn Văn A"/>
+                                </Form.Group>
+                                <Form.Group controlId="DepartmentId" className="mb-3">
+                                    <Form.Label>Mã phòng ban:</Form.Label>
+                                    <Form.Control type="text" name="DepartmentId" required placeholder="1, 2, 3,..."/>
+                                </Form.Group>
+                                <Form.Group controlId="DateOfJoining" className="mb-3">
+                                    <Form.Label>Ngày gia nhập:</Form.Label>
+                                    <Form.Control type="text" name="DateOfJoining" required placeholder="2021/11/11"/>
+                                </Form.Group>
+                                <Form.Group controlId="PhotoFileName" className="mb-3">
+                                    <Form.Label>Ảnh:</Form.Label>
+                                    <Form.Control type="text" name="PhotoFileName" required placeholder=".jpg .png"/>
                                 </Form.Group>
 
                                 <Form.Group>
@@ -61,4 +76,4 @@ function AddDepartmentModal({ show, onHide }) {
     );
 }
 
-export default AddDepartmentModal;
+export default AddEmployeeModal;
