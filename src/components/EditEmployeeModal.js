@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Row, Col, Form, Button } from "react-bootstrap";
 
-function EditEmployeeModal({ show, onHide, id, name, department }) {
+function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining, photoFileName }) {
     const [departments, setDepartments] = useState([]);
 
     useEffect(() => {
@@ -22,6 +22,9 @@ function EditEmployeeModal({ show, onHide, id, name, department }) {
             body: JSON.stringify({
                 Id: e.target.Id.value,
                 Name: e.target.Name.value,
+                DepartmentId: e.target.Department.value,
+                DateOfJoining: e.target.DateOfJoining.value,
+                PhotoFileName: '',
             })
         })
         .then(res => res.json())
@@ -43,7 +46,7 @@ function EditEmployeeModal({ show, onHide, id, name, department }) {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Sửa tên phòng ban
+                        Sửa thông tin nhân viên
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -76,12 +79,26 @@ function EditEmployeeModal({ show, onHide, id, name, department }) {
                                         name="Department"
                                         aria-label="Default select example"
                                         required
-                                        defaultValue={department}
+                                        defaultValue={departmentId}
                                     >
                                         {departments.map(department => (
-                                            <option value={department.Id}>{department.Name}</option>
+                                            <option
+                                                key={department.Id}
+                                                value={department.Id}
+                                            >
+                                                {department.Name}
+                                            </option>
                                         ))}
                                     </Form.Select>
+                                </Form.Group>
+                                <Form.Group controlId="DateOfJoining" className="mb-3">
+                                    <Form.Label>Ngày gia nhập:</Form.Label>
+                                    <Form.Control
+                                        type="date"
+                                        name="DateOfJoining"
+                                        required
+                                        defaultValue={dateOfJoining}
+                                    />
                                 </Form.Group>
 
                                 <Form.Group>

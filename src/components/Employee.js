@@ -72,7 +72,9 @@ function Employee() {
                                             show: true,
                                             id: employee.Id,
                                             name: employee.Name,
-                                            department: employee.Department,
+                                            departmentId: employee.DepartmentId,
+                                            dateOfJoining: employee.DateOfJoining,
+                                            photoFileName: employee.PhotoFileName,
                                         })}
                                     >Sửa</Button>
                                     <Button
@@ -86,7 +88,9 @@ function Employee() {
                                         onHide={handleCloseEditModal}
                                         id={showEditModal.id}
                                         name={showEditModal.name}
-                                        department={showEditModal.department}
+                                        departmentId={showEditModal.departmentId}
+                                        dateOfJoining={showEditModal.dateOfJoining}
+                                        photoFileName={showEditModal.photoFileName}
                                     />
                                 </ButtonToolbar>
                             </td>

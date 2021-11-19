@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Modal, Row, Col, Form, Button } from "react-bootstrap";
+import { Modal, Row, Col, Form, Button, Image } from "react-bootstrap";
 
 function AddEmployeeModal({ show, onHide }) {
     const [departments, setDepartments] = useState([]);
+    const [photoFileName, setPhotoFileName] = useState('anonymous.png');
 
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'department')
@@ -23,6 +24,7 @@ function AddEmployeeModal({ show, onHide }) {
                 Name: e.target.Name.value,
                 DepartmentId: e.target.DepartmentId.value,
                 DateOfJoining: e.target.DateOfJoining.value,
+                PhotoFileName: photoFileName,
             })
         })
         .then(res => res.json())
@@ -31,6 +33,26 @@ function AddEmployeeModal({ show, onHide }) {
             onHide();
         })
         .catch(error => alert(error));
+    }
+    
+    const handleFileSelected = e => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append(
+            'myFile',
+            e.target.files[0],
+            e.target.files[0].name
+        );
+
+        fetch(process.env.REACT_APP_API + 'employee/savefile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            setPhotoFileName(data);
+        })
+        .catch(err => alert('Failed'));
     }
 
     return (
@@ -56,7 +78,8 @@ function AddEmployeeModal({ show, onHide }) {
                                     <Form.Control
                                         type="text"
                                         name="Name"
-                                        required placeholder="Nguyễn Văn A"
+                                        required
+                                        placeholder="Nguyễn Văn A"
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="DepartmentId" className="mb-3">
@@ -64,15 +87,25 @@ function AddEmployeeModal({ show, onHide }) {
                                     <Form.Select
                                         name="DepartmentId"
                                         aria-label="Default select example"
+                                        required
                                     >
                                         {departments.map(department => (
-                                            <option value={department.Id}>{department.Name}</option>
+                                            <option
+                                                key={department.Id}
+                                                value={department.Id}
+                                            >
+                                                {department.Name}
+                                            </option>
                                         ))}
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group controlId="DateOfJoining" className="mb-3">
                                     <Form.Label>Ngày gia nhập:</Form.Label>
-                                    <Form.Control type="text" name="DateOfJoining" required placeholder="2021/11/11"/>
+                                    <Form.Control
+                                        type="date"
+                                        name="DateOfJoining"
+                                        required
+                                    />
                                 </Form.Group>
 
                                 <Form.Group>
@@ -81,6 +114,11 @@ function AddEmployeeModal({ show, onHide }) {
                                     </Button>
                                 </Form.Group>
                             </Form>
+                        </Col>
+
+                        <Col sm={6}>
+                            <Image width="200px" height="200px" src={process.env.REACT_APP_PHOTOPATH + photoFileName}/>
+                            <input className="mt-3" onChange={handleFileSelected} type="File"/>
                         </Col>
                     </Row>
                 </Modal.Body>
