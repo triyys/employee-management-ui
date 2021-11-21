@@ -1,19 +1,33 @@
 import { useEffect, useState } from "react";
-import { Modal, Row, Col, Form, Button, Image } from "react-bootstrap";
+import { Modal, Row, Col, Form, Button } from "react-bootstrap";
+import PhotoPreview from "./PhotoPreview";
 
 function AddEmployeeModal({ show, onHide }) {
     const [departments, setDepartments] = useState([]);
-    const [photoFileName, setPhotoFileName] = useState('anonymous.png');
+    const [photoFile, setPhotoFile] = useState({ preview: process.env.REACT_APP_PHOTOPATH + 'anonymous.png'});
 
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'department')
             .then(res => res.json())
             .then(data => setDepartments(data))
             .catch(err => console.log('ERROR'));
-    }, [])
+    }, []);
 
     const handleSubmit = e => {
         e.preventDefault();
+        // const formData = new FormData();
+        // formData.append(
+        //     'myFile',
+        //     file,
+        //     file.name
+        // );
+
+        // axios.post(process.env.REACT_APP_API + 'employee/savefile', formData)
+        // .then(res => {
+        //     console.log(res);
+        // })
+        // .catch(err => alert('Failed'));
+
         fetch(process.env.REACT_APP_API + 'employee', {
             method: 'POST',
             headers: {
@@ -24,7 +38,7 @@ function AddEmployeeModal({ show, onHide }) {
                 Name: e.target.Name.value,
                 DepartmentId: e.target.DepartmentId.value,
                 DateOfJoining: e.target.DateOfJoining.value,
-                PhotoFileName: photoFileName,
+                PhotoFileName: photoFile.name,
             })
         })
         .then(res => res.json())
@@ -33,26 +47,6 @@ function AddEmployeeModal({ show, onHide }) {
             onHide();
         })
         .catch(error => alert(error));
-    }
-    
-    const handleFileSelected = e => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append(
-            'myFile',
-            e.target.files[0],
-            e.target.files[0].name
-        );
-
-        fetch(process.env.REACT_APP_API + 'employee/savefile', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            setPhotoFileName(data);
-        })
-        .catch(err => alert('Failed'));
     }
 
     return (
@@ -117,8 +111,8 @@ function AddEmployeeModal({ show, onHide }) {
                         </Col>
 
                         <Col sm={6}>
-                            <Image width="200px" height="200px" src={process.env.REACT_APP_PHOTOPATH + photoFileName}/>
-                            <input className="mt-3" onChange={handleFileSelected} type="File"/>
+                            <PhotoPreview photoFile={photoFile} setPhotoFile={setPhotoFile}/>
+                            {/* process.env.REACT_APP_PHOTOPATH + photoFile */}
                         </Col>
                     </Row>
                 </Modal.Body>
