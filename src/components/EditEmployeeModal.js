@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { Modal, Row, Col, Form, Button } from "react-bootstrap";
+import PhotoPreview from "./PhotoPreview";
 
 function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining, photoFileName }) {
     const [departments, setDepartments] = useState([]);
+    const [photoFile, setPhotoFile] = useState({ preview: process.env.REACT_APP_PHOTOPATH + 'anonymous.png' });
+
+    useEffect(() => {
+        setPhotoFile({ preview: process.env.REACT_APP_PHOTOPATH + photoFileName });
+    }, [photoFileName])
 
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'department')
@@ -24,7 +30,7 @@ function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining
                 Name: e.target.Name.value,
                 DepartmentId: e.target.Department.value,
                 DateOfJoining: e.target.DateOfJoining.value,
-                PhotoFileName: '',
+                PhotoFileName: photoFileName,
             })
         })
         .then(res => res.json())
@@ -107,6 +113,10 @@ function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining
                                     </Button>
                                 </Form.Group>
                             </Form>
+                        </Col>
+
+                        <Col sm={6}>
+                            <PhotoPreview photoFile={photoFile} setPhotoFile={setPhotoFile}/>
                         </Col>
                     </Row>
                 </Modal.Body>

@@ -96,7 +96,9 @@ function Department() {
                     variant="primary"
                     size="lg"
                     onClick={handleShowAddModal}
-                >Thêm phòng ban</Button>
+                >
+                    Thêm phòng ban
+                </Button>
                 <AddDepartmentModal show={showAddModal} onHide={handleCloseAddModal}/>
             </ButtonToolbar>
         </div>
