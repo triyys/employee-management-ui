@@ -46,7 +46,7 @@ function Department() {
 
     return (
         <div>
-            <Table className="mt-4" striped bordered hover size="sm">
+            <Table className="mt-4 align-middle" striped bordered hover size="sm">
                 <thead>
                     <tr>
                         <td>Mã số</td>

@@ -15,38 +15,40 @@ function AddEmployeeModal({ show, onHide }) {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // const formData = new FormData();
-        // formData.append(
-        //     'myFile',
-        //     file,
-        //     file.name
-        // );
+        const formData = new FormData();
+        formData.append(
+            'myFile',
+            photoFile,
+            photoFile.name
+        );
 
-        // axios.post(process.env.REACT_APP_API + 'employee/savefile', formData)
-        // .then(res => {
-        //     console.log(res);
-        // })
-        // .catch(err => alert('Failed'));
-
-        fetch(process.env.REACT_APP_API + 'employee', {
+        fetch(process.env.REACT_APP_API + 'employee/savefile', {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                Name: e.target.Name.value,
-                DepartmentId: e.target.DepartmentId.value,
-                DateOfJoining: e.target.DateOfJoining.value,
-                PhotoFileName: photoFile.name,
+            body: formData,
+        })
+        .then(res => {
+            fetch(process.env.REACT_APP_API + 'employee', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Name: e.target.Name.value,
+                    DepartmentId: e.target.DepartmentId.value,
+                    DateOfJoining: e.target.DateOfJoining.value,
+                    PhotoFileName: photoFile.name,
+                })
             })
+            .then(res => res.json())
+            .then(result => {
+                alert(result);
+                onHide();
+            })
+            .catch(error => alert(error));
         })
-        .then(res => res.json())
-        .then(result => {
-            alert(result);
-            onHide();
-        })
-        .catch(error => alert(error));
+        .catch(err => alert('Failed'));
+
     }
 
     return (
@@ -112,7 +114,6 @@ function AddEmployeeModal({ show, onHide }) {
 
                         <Col sm={6}>
                             <PhotoPreview photoFile={photoFile} setPhotoFile={setPhotoFile}/>
-                            {/* process.env.REACT_APP_PHOTOPATH + photoFile */}
                         </Col>
                     </Row>
                 </Modal.Body>
