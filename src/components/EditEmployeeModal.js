@@ -4,7 +4,7 @@ import PhotoPreview from "./PhotoPreview";
 
 function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining, photoFileName }) {
     const [departments, setDepartments] = useState([]);
-    const [photoFile, setPhotoFile] = useState({ preview: process.env.REACT_APP_PHOTOPATH + 'anonymous.png' });
+    const [photoFile, setPhotoFile] = useState({});
 
     useEffect(() => {
         setPhotoFile({ preview: process.env.REACT_APP_PHOTOPATH + photoFileName });
@@ -14,31 +14,45 @@ function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining
         fetch(process.env.REACT_APP_API + 'department')
             .then(res => res.json())
             .then(data => setDepartments(data))
-            .catch(err => console.log('ERROR'));
+            .catch(err => console.log(err));
     }, [])
 
     const handleSubmit = e => {
         e.preventDefault();
-        fetch(process.env.REACT_APP_API + 'employee', {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                Id: e.target.Id.value,
-                Name: e.target.Name.value,
-                DepartmentId: e.target.Department.value,
-                DateOfJoining: e.target.DateOfJoining.value,
-                PhotoFileName: photoFileName,
+        const formData = new FormData();
+        formData.append(
+            'myFile',
+            photoFile,
+            photoFile.name
+        );
+
+        fetch(process.env.REACT_APP_API + 'employee/savefile', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(res => {
+            fetch(process.env.REACT_APP_API + 'employee', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Id: e.target.Id.value,
+                    Name: e.target.Name.value,
+                    DepartmentId: e.target.Department.value,
+                    DateOfJoining: e.target.DateOfJoining.value,
+                    PhotoFileName: photoFile.name,
+                })
             })
+            .then(res => res.json())
+            .then(result => {
+                alert(result);
+                onHide();
+            })
+            .catch(error => alert(error));
         })
-        .then(res => res.json())
-        .then(result => {
-            alert(result);
-            onHide();
-        })
-        .catch(error => alert(error));
+        .catch(err => alert('Failed'));
     }
 
     return (

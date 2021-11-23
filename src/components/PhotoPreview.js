@@ -14,7 +14,7 @@ function PhotoPreview({ photoFile, setPhotoFile }) {
 
         setPhotoFile(file);
 
-        e.target.value = null;
+        // e.target.value = null;
     }
 
     return (
@@ -24,7 +24,7 @@ function PhotoPreview({ photoFile, setPhotoFile }) {
                 type="file"
                 onChange={handleFileSelected}
             />
-            {photoFile && <img width="200px" height="200px" src={photoFile.preview} alt=""/>}
+            {photoFile && <img width="200px" src={photoFile.preview} alt=""/>}
         </div>
     )
 }
