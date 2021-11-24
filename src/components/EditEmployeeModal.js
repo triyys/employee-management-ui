@@ -130,7 +130,7 @@ function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining
                         </Col>
 
                         <Col sm={6}>
-                            <PhotoPreview photoFile={photoFile} setPhotoFile={setPhotoFile}/>
+                            {photoFileName && <PhotoPreview photoFile={photoFile} setPhotoFile={setPhotoFile}/>}
                         </Col>
                     </Row>
                 </Modal.Body>

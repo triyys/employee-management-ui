@@ -83,22 +83,22 @@ function Employee() {
                                         size="sm"
                                         onClick={() => deleteEmployee(employee.Id, employee.Name)}
                                     >Xóa</Button>
-                                    <EditEmployeeModal
-                                        show={showEditModal.show}
-                                        onHide={handleCloseEditModal}
-                                        id={showEditModal.id}
-                                        name={showEditModal.name}
-                                        departmentId={showEditModal.departmentId}
-                                        dateOfJoining={showEditModal.dateOfJoining}
-                                        photoFileName={showEditModal.photoFileName}
-                                    />
                                 </ButtonToolbar>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-            
+            <EditEmployeeModal
+                show={showEditModal.show}
+                onHide={handleCloseEditModal}
+                id={showEditModal.id}
+                name={showEditModal.name}
+                departmentId={showEditModal.departmentId}
+                dateOfJoining={showEditModal.dateOfJoining}
+                photoFileName={showEditModal.photoFileName}
+            />
+
             <ButtonToolbar>
                 <Button
                     variant="primary"

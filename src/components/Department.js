@@ -78,18 +78,18 @@ function Department() {
                                         size="sm"
                                         onClick={() => deleteDepartment(department.Id)}
                                     >Xóa</Button>
-                                    <EditDepartmentModal
-                                        show={showEditModal.show}
-                                        onHide={handleCloseEditModal}
-                                        departmentId={showEditModal.id}
-                                        departmentName={showEditModal.name}
-                                    />
                                 </ButtonToolbar>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            <EditDepartmentModal
+                show={showEditModal.show}
+                onHide={handleCloseEditModal}
+                departmentId={showEditModal.id}
+                departmentName={showEditModal.name}
+            />
 
             <ButtonToolbar>
                 <Button
