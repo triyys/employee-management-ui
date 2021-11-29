@@ -5,17 +5,19 @@ import PhotoPreview from "./PhotoPreview";
 function EditEmployeeModal({ show, onHide, id, name, departmentId, dateOfJoining, photoFileName }) {
     const [departments, setDepartments] = useState([]);
     const [photoFile, setPhotoFile] = useState({});
-
+    
+    // anti-pattern can cause some problems:
+    // https://vhudyma-blog.eu/react-antipatterns-props-in-initial-state/
     useEffect(() => {
         setPhotoFile({ preview: process.env.REACT_APP_PHOTOPATH + photoFileName });
-    }, [photoFileName])
+    }, [photoFileName]);
 
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'department')
             .then(res => res.json())
             .then(data => setDepartments(data))
             .catch(err => console.log(err));
-    }, [])
+    }, []);
 
     const handleSubmit = e => {
         e.preventDefault();

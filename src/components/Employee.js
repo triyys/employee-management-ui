@@ -105,7 +105,10 @@ function Employee() {
                     size="lg"
                     onClick={handleShowAddModal}
                 >Thêm nhân viên</Button>
-                <AddEmployeeModal show={showAddModal} onHide={handleCloseAddModal}/>
+                <AddEmployeeModal
+                    show={showAddModal}
+                    onHide={handleCloseAddModal}
+                />
             </ButtonToolbar>
         </div>
     );
