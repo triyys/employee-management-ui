@@ -14,7 +14,7 @@ function PhotoPreview({ photoFile, setPhotoFile }) {
 
         setPhotoFile(file);
 
-        // e.target.value = null;
+        e.target.value = null;
     }
 
     return (
